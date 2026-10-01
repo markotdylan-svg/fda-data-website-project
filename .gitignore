@@ -1,0 +1,4 @@
+data/raw/Lahman/
+data/raw/*.tar.gz
+__pycache__/
+.venv/
