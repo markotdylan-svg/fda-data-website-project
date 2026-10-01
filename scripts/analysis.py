@@ -115,6 +115,8 @@ def main() -> None:
         "high": {"year": int(avg.idxmax()), "value": round(float(avg.max()), 4)},
         "low": {"year": int(avg.idxmin()), "value": round(float(avg.min()), 4)},
         "last": {"year": years[-1], "value": round(float(avg.iloc[-1]), 4)},
+        "after_low": {"year": int(avg.idxmin()) + 1, "value": round(float(avg.loc[avg.idxmin() + 1]), 4)},
+        "lowest5_last50": [{"year": int(y), "value": round(float(v), 4)} for y, v in avg.loc[years[-1] - 49:].nsmallest(5).items()],
     }
 
     # 5. Franchise home runs
@@ -129,6 +131,11 @@ def main() -> None:
             for r in fr.itertuples()
         ],
         "seasons_by_franchise": {k: int(v) for k, v in df.groupby("franchID")["yearID"].nunique().items()},
+        "original_franchises": int((df.groupby("franchID")["yearID"].min() == years[0]).sum()),
+        "originals_hold_top_spots": bool(
+            set(fr["franchID"].head(int((df.groupby("franchID")["yearID"].min() == years[0]).sum())))
+            == set(df.loc[df["yearID"] == years[0], "franchID"])
+        ),
     }
 
     # 6. Handedness among regular hitters

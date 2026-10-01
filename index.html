@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Box Score Century — Report</title>
+  <meta name="description" content="125 years of American and National League hitting, 1901–2025, from the Lahman Baseball Database.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Oswald:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23fbf7ec' stroke='%2313294b' stroke-width='2'/%3E%3Cpath d='M8 5c4 6 4 16 0 22M24 5c-4 6-4 16 0 22' fill='none' stroke='%23b3262e' stroke-width='2'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">
+      <svg class="brand-ball" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14.5" fill="#fbf7ec" stroke="#f7f3e6"/><path d="M8 5c4 6 4 16 0 22M24 5c-4 6-4 16 0 22" fill="none" stroke="#b3262e" stroke-width="2" stroke-dasharray="2 1.6"/></svg>
+      Box Score Century
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="active">Report</a>
+      <a href="dashboard.html">Dashboard</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <p class="eyebrow">American &amp; National League hitting · 1901–2025</p>
+  <h1>Box Score Century</h1>
+  <p class="byline">By Dylan Marko</p>
+  <p class="summary">
+    This report follows <b data-k="headline.seasons"></b> seasons of big-league hitting, from 1901 to 2025,
+    using <b data-k="headline.rows" data-f="int"></b> rows from the Lahman Baseball Database, where each
+    row is one player's batting line with one team in one season. The game it shows has traded contact for
+    power: home runs per at-bat are <b data-k="headline.hr_rate_change" data-f="x"></b> their 1901 level and
+    strikeouts <b data-k="headline.so_rate_change" data-f="x"></b>, while the triple has nearly vanished.
+    Batting averages have swung from era to era and sit near the low end today. The players themselves come
+    from farther away than ever, and the designated hitter split the two leagues for nearly half a century
+    until the universal DH erased the gap.
+  </p>
+</header>
+
+<main class="wrap">
+
+  <section aria-label="Headline numbers" class="scoreboard">
+    <div class="stat"><div class="stat-value" data-k="headline.seasons"></div><div class="stat-label">Seasons covered</div></div>
+    <div class="stat"><div class="stat-value" data-k="headline.rows" data-f="int"></div><div class="stat-label">Player-season rows</div></div>
+    <div class="stat"><div class="stat-value" data-k="headline.total_hr" data-f="int"></div><div class="stat-label">Home runs hit</div></div>
+    <div class="stat"><div class="stat-value" data-k="headline.hr_rate_change" data-f="x"></div><div class="stat-label">HR rate vs. 1901</div></div>
+    <div class="stat"><div class="stat-value" data-k="headline.so_rate_change" data-f="x"></div><div class="stat-label">Strikeout rate vs. 1901</div></div>
+    <div class="stat"><div class="stat-value" data-k="headline.foreign_share_last" data-f="pct"></div><div class="stat-label">Foreign-born players, 2025</div></div>
+  </section>
+
+  <div class="narrow" style="margin: 0 auto;">
+
+  <!-- 1 -->
+  <section class="finding" id="home-runs">
+    <div class="finding-num">Finding 1 · Power</div>
+    <h2>Home runs are nearly six times as common as in 1901, and the peak came in 2019, not the steroid era</h2>
+    <p>
+      In <span data-k="home_runs.first.year"></span>, batters hit <b data-k="home_runs.first.value" data-f="d2"></b>
+      home runs per 100 at-bats. The first big jump came when the dead-ball era ended: the rate rose from
+      <b data-k="home_runs.by_era.0.value" data-f="d2"></b> in the Dead Ball era (1901–1919) to
+      <b data-k="home_runs.by_era.1.value" data-f="d2"></b> in the Live Ball era (1920–1941), about three times as high,
+      and it kept climbing in every era after that.
+    </p>
+    <p>
+      The steroid era (1994–2005) averaged <b data-k="home_runs.by_era.5.value" data-f="d2"></b> home runs per 100
+      at-bats and topped out at <b data-k="home_runs.max_steroid.value" data-f="d2"></b> in
+      <span data-k="home_runs.max_steroid.year"></span>. But the Modern era (2006–2025) has been even higher, at
+      <b data-k="home_runs.by_era.6.value" data-f="d2"></b>, and the single highest season is
+      <span data-k="home_runs.peak.year"></span>, at <b data-k="home_runs.peak.value" data-f="d2"></b>.
+      In <span data-k="home_runs.last.year"></span> the rate was <b data-k="home_runs.last.value" data-f="d2"></b>.
+    </p>
+    <div class="chart-card">
+      <div class="chart-box"><canvas id="chart-hr" aria-label="Home runs per 100 at-bats by season"></canvas></div>
+      <p class="chart-note">Home runs per 100 at-bats, all AL and NL batters, by season. Shaded bands mark eras.</p>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section class="finding" id="strikeouts">
+    <div class="finding-num">Finding 2 · Strikeouts</div>
+    <h2>Strikeouts have climbed for most of a century and now end one in four at-bats</h2>
+    <p>
+      Strikeouts hit their low point in <span data-k="strikeouts.low.year"></span>, at
+      <b data-k="strikeouts.low.value" data-f="d2"></b> per 100 at-bats. From there the rate rose almost era after era:
+      <b data-k="strikeouts.by_era.2.value" data-f="d1"></b> in the Integration era,
+      <b data-k="strikeouts.by_era.3.value" data-f="d1"></b> in the Expansion era,
+      <b data-k="strikeouts.by_era.5.value" data-f="d1"></b> in the steroid era and
+      <b data-k="strikeouts.by_era.6.value" data-f="d1"></b> in the Modern era.
+    </p>
+    <p>
+      The climb sped up after 2005: the rate rose in <b data-k="strikeouts.years_rising_since_2005"></b> of the
+      20 seasons from 2006 to 2025 and peaked at <b data-k="strikeouts.peak.value" data-f="d2"></b> in
+      <span data-k="strikeouts.peak.year"></span>. In <span data-k="strikeouts.last.year"></span> it was
+      <b data-k="strikeouts.last.value" data-f="d2"></b>, close to one strikeout in every four at-bats and
+      <b data-k="headline.so_rate_change" data-f="x"></b> the 1901 rate of <b data-k="strikeouts.first.value" data-f="d2"></b>.
+    </p>
+    <div class="chart-card">
+      <div class="chart-box"><canvas id="chart-so" aria-label="Strikeouts per 100 at-bats by season"></canvas></div>
+      <p class="chart-note">Strikeouts per 100 at-bats, all AL and NL batters, by season.</p>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="finding" id="batting-average">
+    <div class="finding-num">Finding 3 · Contact</div>
+    <h2>Batting averages peaked in 1930, bottomed out in 1968, and sit near the low end today</h2>
+    <p>
+      The league batting average reached its highest point in <span data-k="batting_average.high.year"></span>, at
+      <b data-k="batting_average.high.value" data-f="avg"></b>, in the middle of the Live Ball era, which also has the
+      highest era average (<b data-k="batting_average.by_era.1.value" data-f="avg"></b>). Its lowest point came in
+      <span data-k="batting_average.low.year"></span>, at <b data-k="batting_average.low.value" data-f="avg"></b>.
+      Baseball lowered the pitcher's mound the next season, and the average rose to
+      <b data-k="batting_average.after_low.value" data-f="avg"></b> in <span data-k="batting_average.after_low.year"></span>.
+    </p>
+    <p>
+      The Expansion era (1961–1976) had the lowest era average, <b data-k="batting_average.by_era.3.value" data-f="avg"></b>.
+      The steroid era pushed it back up to <b data-k="batting_average.by_era.5.value" data-f="avg"></b>, and the Modern
+      era has slid back to <b data-k="batting_average.by_era.6.value" data-f="avg"></b>. The
+      <span data-k="batting_average.last.year"></span> average of <b data-k="batting_average.last.value" data-f="avg"></b>
+      is among the five lowest of the last 50 seasons, and all five came between 2020 and 2025
+      (lowest: <b data-k="batting_average.lowest5_last50.0.value" data-f="avg"></b> in
+      <span data-k="batting_average.lowest5_last50.0.year"></span>). With more strikeouts (Finding 2), fewer at-bats end with a ball in play.
+    </p>
+    <div class="chart-card">
+      <div class="chart-box"><canvas id="chart-avg" aria-label="League batting average by season"></canvas></div>
+      <p class="chart-note">League batting average (total hits ÷ total at-bats) by season.</p>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="finding" id="franchises">
+    <div class="finding-num">Finding 4 · Franchises</div>
+    <h2>The Yankees have hit more home runs than any other franchise</h2>
+    <p>
+      Since 1901 the <span data-k="franchises.franchises.0.name"></span> have hit
+      <b data-k="franchises.franchises.0.hr" data-f="int"></b> home runs, well ahead of the
+      <span data-k="franchises.franchises.1.name"></span> (<b data-k="franchises.franchises.1.hr" data-f="int"></b>) and the
+      <span data-k="franchises.franchises.2.name"></span> (<b data-k="franchises.franchises.2.hr" data-f="int"></b>).
+      The <b data-k="franchises.original_franchises"></b> franchises that date back to 1901 hold the top
+      <span data-k="franchises.original_franchises"></span> spots, because each one has had 125 seasons to pile up home runs.
+    </p>
+    <p>
+      The bottom of the list is made up of expansion clubs. The <span data-k="franchises.franchises.29.name"></span>
+      (<b data-k="franchises.franchises.29.hr" data-f="int"></b>) and
+      <span data-k="franchises.franchises.27.name"></span> (<b data-k="franchises.franchises.27.hr" data-f="int"></b>)
+      began play in 1998, so they have had less than a quarter of the time. Franchises that moved, like the
+      Giants (New York to San Francisco) or the Orioles (who began as the Milwaukee Brewers and then the St. Louis Browns),
+      are counted under one name across their whole history.
+    </p>
+    <div class="chart-card">
+      <div class="chart-box tall"><canvas id="chart-fr" aria-label="Total home runs by franchise"></canvas></div>
+      <p class="chart-note">Total home runs by franchise, 1901–2025. Franchises are named after their 2025 team.</p>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section class="finding" id="handedness">
+    <div class="finding-num">Finding 5 · Handedness</div>
+    <h2>Left-handed hitters bat about ten points higher than right-handers, with the same power</h2>
+    <p>
+      Among regular hitters (rows with at least <span data-k="handedness.min_ab"></span> at-bats,
+      <b data-k="handedness.regular_rows" data-f="int"></b> in all), left-handed batters hit
+      <b data-k="handedness.groups.0.avg" data-f="avg"></b>, right-handed batters
+      <b data-k="handedness.groups.1.avg" data-f="avg"></b>, and switch hitters
+      <b data-k="handedness.groups.2.avg" data-f="avg"></b>. Lefties also struck out less often:
+      <b data-k="handedness.groups.0.so_per_100ab" data-f="d1"></b> times per 100 at-bats against
+      <b data-k="handedness.groups.1.so_per_100ab" data-f="d1"></b> for right-handers. One likely reason is that most
+      pitchers throw right-handed, and hitters do better against pitchers who throw from the other side.
+    </p>
+    <p>
+      Power is the exception: lefties and righties hit home runs at almost exactly the same rate
+      (<b data-k="handedness.groups.0.hr_per_100ab" data-f="d2"></b> and
+      <b data-k="handedness.groups.1.hr_per_100ab" data-f="d2"></b> per 100 at-bats), while switch hitters lag at
+      <b data-k="handedness.groups.2.hr_per_100ab" data-f="d2"></b>. Left-handed batters took
+      <b data-k="handedness.left_ab_share_by_era.1.value" data-f="pct"></b> of regulars' at-bats in the Live Ball era,
+      fell to <b data-k="handedness.left_ab_share_by_era.4.value" data-f="pct"></b> in the Free Agency era, and are back to
+      <b data-k="handedness.left_ab_share_by_era.6.value" data-f="pct"></b> in the Modern era.
+    </p>
+    <div class="chart-card">
+      <div class="chart-box"><canvas id="chart-hand" aria-label="Batting average and home-run rate by batting side"></canvas></div>
+      <p class="chart-note">Regular hitters (300+ at-bats with one team), 1901–2025. Bars use the left axis (batting average) and the right axis (home runs per 100 at-bats).</p>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section class="finding" id="foreign-born">
+    <div class="finding-num">Finding 6 · A global game</div>
+    <h2>More than one in four big-league hitters is now born outside the United States</h2>
+    <p>
+      In <span data-k="foreign_born.first.year"></span>, <b data-k="foreign_born.first.value" data-f="pct"></b> of the
+      players in this data were born outside the U.S. The share reached <b data-k="foreign_born.share_1960" data-f="pct"></b>
+      by 1960 and <b data-k="foreign_born.share_1990" data-f="pct"></b> by 1990, then rose quickly. In
+      <span data-k="foreign_born.last.year"></span>, <b data-k="foreign_born.last.foreign_players" data-f="int"></b> of
+      <b data-k="foreign_born.last.players" data-f="int"></b> players (<b data-k="foreign_born.last.value" data-f="pct"></b>)
+      were foreign-born, from <b data-k="foreign_born.countries_latest"></b> countries and territories.
+    </p>
+    <p>
+      The Dominican Republic leads by a wide margin, with <b data-k="foreign_born.top_countries_latest.0.players"></b>
+      players in 2025, followed by Venezuela (<b data-k="foreign_born.top_countries_latest.1.players"></b>) and Cuba
+      (<b data-k="foreign_born.top_countries_latest.2.players"></b>). Since 1901 the Dominican Republic has sent
+      <b data-k="foreign_born.top_countries_alltime.0.players" data-f="int"></b> players to the AL and NL.
+      The Lahman data lists Puerto Rico separately from the U.S., so Puerto Rican players count here as born outside the U.S.
+    </p>
+    <div class="chart-card">
+      <div class="chart-box"><canvas id="chart-foreign" aria-label="Share of players born outside the U.S. by season"></canvas></div>
+      <p class="chart-note">Share of players born outside the U.S. by season. Each player counts once per season.</p>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section class="finding" id="triples">
+    <div class="finding-num">Finding 7 · The lost triple</div>
+    <h2>The triple has nearly disappeared as the home run took over</h2>
+    <p>
+      In <span data-k="triples.first.year"></span>, batters hit <b data-k="triples.first.triples" data-f="int"></b>
+      triples and only <b data-k="triples.first.hr" data-f="int"></b> home runs. Home runs passed triples for the first
+      time in <span data-k="triples.hr_first_pass_triples_year"></span>, triples led once more in 1931, and from
+      <span data-k="triples.hr_pass_triples_for_good_year"></span> on home runs have outnumbered triples every season.
+    </p>
+    <p>
+      The triple rate fell from <b data-k="triples.first.value" data-f="d2"></b> per 1,000 at-bats in 1901 to
+      <b data-k="triples.last.value" data-f="d2"></b> in <span data-k="triples.last.year"></span>. That year batters hit
+      <b data-k="triples.last.hr" data-f="int"></b> home runs and just <b data-k="triples.last.triples" data-f="int"></b>
+      triples, about <b data-k="triples.hr_to_triples_last" data-f="d1"></b> home runs for every triple.
+    </p>
+    <div class="chart-card">
+      <div class="chart-box"><canvas id="chart-triples" aria-label="Triples and home runs per 1,000 at-bats by season"></canvas></div>
+      <p class="chart-note">Triples and home runs per 1,000 at-bats by season.</p>
+    </div>
+  </section>
+
+  <!-- 8 -->
+  <section class="finding" id="leagues">
+    <div class="finding-num">Finding 8 · AL vs. NL</div>
+    <h2>The designated hitter gave the American League a hitting edge for almost half a century</h2>
+    <p>
+      Before the AL adopted the designated hitter in 1973, the two leagues hit almost the same:
+      <b data-k="leagues.periods.0.al_avg" data-f="avg"></b> in the AL and <b data-k="leagues.periods.0.nl_avg" data-f="avg"></b>
+      in the NL from 1901 to 1972, with the AL ahead in <b data-k="leagues.al_higher_years_1901_1972"></b> of 72 seasons.
+    </p>
+    <p>
+      From 1973 to 2021, when only the AL let a hitter bat for the pitcher, the AL out-hit the NL in
+      <b data-k="leagues.al_higher_years_1973_2021"></b> of 49 seasons, <b data-k="leagues.periods.1.al_avg" data-f="avg"></b>
+      to <b data-k="leagues.periods.1.nl_avg" data-f="avg"></b>, and hit more home runs
+      (<b data-k="leagues.periods.1.al_hr" data-f="d2"></b> against <b data-k="leagues.periods.1.nl_hr" data-f="d2"></b> per
+      100 at-bats). Once the NL adopted the DH in 2022, the gap disappeared: from 2022 to 2025 the AL hit
+      <b data-k="leagues.periods.2.al_avg" data-f="avg"></b> and the NL <b data-k="leagues.periods.2.nl_avg" data-f="avg"></b>.
+    </p>
+    <div class="chart-card">
+      <div class="chart-box"><canvas id="chart-lg" aria-label="AL minus NL batting average by season"></canvas></div>
+      <p class="chart-note">AL batting average minus NL batting average, in points (.001), by season. Red bars: AL higher. Navy bars: NL higher.</p>
+    </div>
+  </section>
+
+  <!-- methods -->
+  <section class="methods" id="about-the-data">
+    <h2>About the data</h2>
+    <dl>
+      <dt>Source</dt>
+      <dd>
+        The <a href="https://sabr.org/lahman-database/">Lahman Baseball Database</a> (2025 release, seasons 1871–2025),
+        maintained by SABR. The tables come from the R package
+        <a href="https://cran.r-project.org/package=Lahman"><code>Lahman</code></a> version 14.0-0 on CRAN, which ships
+        the same release. <code>scripts/prepare_data.py</code> downloads it and builds <code>data/batting.csv</code>;
+        <code>scripts/analysis.py</code> computes every number on this page into <code>data/findings.json</code>.
+      </dd>
+
+      <dt>What one row is</dt>
+      <dd>
+        One player's batting totals for one team in one season (the Lahman <em>Batting</em> table). A player traded
+        mid-season has one row per team. Player name, batting side, throwing arm and birth country come from the
+        <em>People</em> table; team and franchise come from <em>Teams</em>.
+      </dd>
+
+      <dt>Rows dropped</dt>
+      <dd>
+        The source table has <b data-k="dropped.source_rows" data-f="int"></b> rows. This project keeps the
+        <b data-k="dropped.kept_rows" data-f="int"></b> American League and National League rows from 1901 to 2025.
+        It drops <b data-k="dropped.other_league_rows" data-f="int"></b> rows from other leagues (19th-century leagues,
+        the Federal League and the Negro Leagues), whose record-keeping is not comparable, and
+        <b data-k="dropped.pre1901_al_nl_rows" data-f="int"></b> National League rows from before 1901, when the
+        American League did not yet exist. Rows with zero at-bats (mostly pitchers who never batted) stay in the
+        data; they add nothing to any total.
+      </dd>
+
+      <dt>How rates are computed</dt>
+      <dd>
+        Every rate is a ratio of totals over all rows in the group, not an average of player rates.
+        Batting average = hits ÷ at-bats. Home runs per 100 at-bats = 100 × home runs ÷ at-bats.
+        Strikeouts per 100 at-bats = 100 × strikeouts ÷ at-bats. Triples and home runs per 1,000 at-bats use
+        1,000 in place of 100. Era figures pool all seasons in the era. "HR rate vs. 1901" divides the
+        2025 home-run rate by the 1901 rate (the same for strikeouts).
+      </dd>
+
+      <dt>Other definitions</dt>
+      <dd>
+        <b>Eras:</b> Dead Ball 1901–1919, Live Ball 1920–1941, Integration 1942–1960, Expansion 1961–1976,
+        Free Agency 1977–1993, Steroid 1994–2005, Modern 2006–2025.
+        <b>Regular hitters</b> (Finding 5 only): rows with at least 300 at-bats, so pitchers batting do not skew
+        the comparison; rows with no batting side are left out.
+        <b>Foreign-born</b> (Finding 6): birth country is not "USA"; each player counts once per season even if he
+        played for two teams, and 2 rows with no birth country are left out.
+        <b>Franchises</b> (Finding 4): teams are grouped by Lahman's franchise ID and named after the team the
+        franchise fielded in 2025.
+      </dd>
+    </dl>
+    <p>Every number above can be checked on the <a href="dashboard.html">dashboard</a>, which works from the same data file.</p>
+  </section>
+
+  </div>
+</main>
+
+<footer>
+  Box Score Century · Dylan Marko · Data: <a href="https://sabr.org/lahman-database/">Lahman Baseball Database</a> (SABR)
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/report.js"></script>
+</body>
+</html>
