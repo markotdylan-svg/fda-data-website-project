@@ -1020,7 +1020,7 @@
    },
    {
     "franchID": "OAK",
-    "name": "Oakland Athletics",
+    "name": "Athletics",
     "hr": 14300,
     "ab": 658865,
     "hr_per_100ab": 2.17
@@ -1034,7 +1034,7 @@
    },
    {
     "franchID": "CLE",
-    "name": "Cleveland Indians",
+    "name": "Cleveland Guardians",
     "hr": 14035,
     "ab": 663602,
     "hr_per_100ab": 2.115
@@ -1097,7 +1097,7 @@
    },
    {
     "franchID": "ANA",
-    "name": "Los Angeles Angels of Anaheim",
+    "name": "Los Angeles Angels",
     "hr": 9375,
     "ab": 349413,
     "hr_per_100ab": 2.683
@@ -1174,7 +1174,7 @@
    },
    {
     "franchID": "FLA",
-    "name": "Florida Marlins",
+    "name": "Miami Marlins",
     "hr": 4718,
     "ab": 175900,
     "hr_per_100ab": 2.682

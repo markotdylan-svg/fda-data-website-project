@@ -15,7 +15,8 @@ Steps
    in data/raw/ so the untouched source tables are kept in the repo.
 3. Keep American League and National League rows from 1901-2025.
 4. Join player name and handedness (People), and team and franchise
-   names (Teams, TeamsFranchises).
+   names (Teams, TeamsFranchises). Each franchise is named after its
+   most recent team name (e.g. Cleveland Guardians, not Indians).
 5. Write data/batting.csv, the one file the website uses.
 
 Run with:  uv run scripts/prepare_data.py
@@ -42,6 +43,8 @@ TABLES = ["Batting", "People", "Teams", "TeamsFranchises"]
 
 FIRST_YEAR, LAST_YEAR = 1901, 2025
 LEAGUES = ["AL", "NL"]
+# Lahman's 2025 team name for the Angels is out of date.
+FRANCHISE_NAME_FIXES = {"Los Angeles Angels of Anaheim": "Los Angeles Angels"}
 
 
 def download_tarball() -> Path:
@@ -91,6 +94,12 @@ def build(tables: dict[str, pd.DataFrame]) -> pd.DataFrame:
         .merge(franchises, on="franchID", how="left", validate="many_to_one")
     )
     df = df.rename(columns={"X2B": "2B", "X3B": "3B"})
+
+    # TeamsFranchises keeps some old names (e.g. "Cleveland Indians"), so name
+    # each franchise after the team it fielded in its most recent season.
+    latest = df.sort_values("yearID").groupby("franchID")["teamName"].last()
+    latest = latest.replace(FRANCHISE_NAME_FIXES)
+    df["franchName"] = df["franchID"].map(latest)
 
     front = ["yearID", "playerID", "playerName", "stint", "teamID", "teamName", "franchID",
              "franchName", "lgID", "bats", "throws", "birthCountry"]
