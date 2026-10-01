@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Box Score Century — Dashboard</title>
+  <meta name="description" content="Interactive dashboard of American and National League batting, 1901–2025.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Oswald:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23fbf7ec' stroke='%2313294b' stroke-width='2'/%3E%3Cpath d='M8 5c4 6 4 16 0 22M24 5c-4 6-4 16 0 22' fill='none' stroke='%23b3262e' stroke-width='2'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">
+      <svg class="brand-ball" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14.5" fill="#fbf7ec" stroke="#f7f3e6"/><path d="M8 5c4 6 4 16 0 22M24 5c-4 6-4 16 0 22" fill="none" stroke="#b3262e" stroke-width="2" stroke-dasharray="2 1.6"/></svg>
+      Box Score Century
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Report</a>
+      <a href="dashboard.html" class="active">Dashboard</a>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <header class="dash-head">
+    <p class="eyebrow">Interactive · 1901–2025</p>
+    <h1>The Dugout Dashboard</h1>
+    <p>
+      Filter every AL and NL batting line since 1901, then switch what the charts measure and how they break it down.
+      All numbers are computed in your browser from <code>data/batting.csv</code>, the same file behind the
+      <a href="index.html">report</a>.
+    </p>
+    <p class="status" id="status">Loading data…</p>
+  </header>
+
+  <!-- filters -->
+  <section class="panel" aria-label="Filters">
+    <div class="filters">
+      <label class="field">First season
+        <select id="f-from"></select>
+      </label>
+      <label class="field">Last season
+        <select id="f-to"></select>
+      </label>
+      <label class="field">Franchise
+        <select id="f-franch"><option value="">All franchises</option></select>
+      </label>
+      <label class="field">League
+        <select id="f-lg">
+          <option value="">Both leagues</option>
+          <option value="AL">American League</option>
+          <option value="NL">National League</option>
+        </select>
+      </label>
+      <label class="field">Bats
+        <select id="f-bats">
+          <option value="">All batters</option>
+          <option value="L">Left-handed</option>
+          <option value="R">Right-handed</option>
+          <option value="B">Switch hitters</option>
+        </select>
+      </label>
+      <label class="field">Birthplace
+        <select id="f-born">
+          <option value="">Anywhere</option>
+          <option value="USA">Born in the U.S.</option>
+          <option value="Outside USA">Born outside the U.S.</option>
+        </select>
+      </label>
+      <label class="field">Minimum at-bats (per row)
+        <select id="f-minab">
+          <option value="0">Any (all rows)</option>
+          <option value="1">At least 1</option>
+          <option value="100">At least 100</option>
+          <option value="300">At least 300 (regulars)</option>
+          <option value="502">At least 502</option>
+        </select>
+      </label>
+      <button class="btn" id="reset" type="button">Reset all filters</button>
+    </div>
+  </section>
+
+  <!-- summary numbers -->
+  <section aria-label="Summary numbers" class="scoreboard" style="margin-top: 0;">
+    <div class="stat"><div class="stat-value" id="s-rows">–</div><div class="stat-label">Player-season rows</div></div>
+    <div class="stat"><div class="stat-value" id="s-players">–</div><div class="stat-label">Players</div></div>
+    <div class="stat"><div class="stat-value" id="s-hr">–</div><div class="stat-label">Home runs</div></div>
+    <div class="stat"><div class="stat-value" id="s-avg">–</div><div class="stat-label">Batting average</div></div>
+    <div class="stat"><div class="stat-value" id="s-hrr">–</div><div class="stat-label">HR per 100 AB</div></div>
+    <div class="stat"><div class="stat-value" id="s-sor">–</div><div class="stat-label">SO per 100 AB</div></div>
+  </section>
+
+  <!-- switches -->
+  <section class="panel" aria-label="Chart switches">
+    <div class="switches">
+      <div class="switch-group">
+        <span class="switch-title">Measure</span>
+        <div class="seg" id="sw-measure" role="group" aria-label="Measure"></div>
+      </div>
+      <div class="switch-group">
+        <span class="switch-title">Break down by</span>
+        <div class="seg" id="sw-break" role="group" aria-label="Break down by"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- charts -->
+  <section class="chart-grid" aria-label="Charts">
+    <div class="chart-card">
+      <h3 id="t-group"></h3>
+      <div class="chart-box"><canvas id="c-group"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3 id="t-trend"></h3>
+      <div class="chart-box"><canvas id="c-trend"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3 id="t-split"></h3>
+      <div class="chart-box"><canvas id="c-split"></canvas></div>
+      <p class="chart-note" id="n-split"></p>
+    </div>
+    <div class="chart-card">
+      <h3 id="t-players"></h3>
+      <div class="chart-box"><canvas id="c-players"></canvas></div>
+      <p class="chart-note" id="n-players"></p>
+    </div>
+  </section>
+
+  <!-- table -->
+  <section class="panel table-panel" aria-label="Numbers behind the current view" style="margin-top: 1.2rem;">
+    <h3 id="t-table">Numbers behind the current view</h3>
+    <div class="table-wrap">
+      <table id="table">
+        <thead></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <p class="chart-note">
+      Rates are ratios of totals: batting average = H ÷ AB, HR per 100 AB = 100 × HR ÷ AB, SO per 100 AB = 100 × SO ÷ AB,
+      3B per 1,000 AB = 1,000 × 3B ÷ AB. "Players" counts each player once. "Median HR" is the median of home runs
+      per row (one player with one team in one season).
+    </p>
+  </section>
+
+</main>
+
+<footer>
+  Box Score Century · Dylan Marko · Data: <a href="https://sabr.org/lahman-database/">Lahman Baseball Database</a> (SABR)
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>
