@@ -33,6 +33,7 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data" / "batting.csv"
 OUT = ROOT / "data" / "findings.json"
+RAW_BATTING = ROOT / "data" / "raw" / "Batting.csv"
 
 REGULAR_AB = 300
 ERAS = [  # label, first season, last season
@@ -61,6 +62,14 @@ def by_year(df: pd.DataFrame) -> pd.DataFrame:
 def main() -> None:
     df = pd.read_csv(DATA)
     df["era"] = df["yearID"].map(era_of)
+    raw = pd.read_csv(RAW_BATTING, usecols=["yearID", "lgID"])
+    al_nl = raw["lgID"].isin(["AL", "NL"])
+    dropped = {
+        "source_rows": int(len(raw)),
+        "kept_rows": int(len(df)),
+        "other_league_rows": int((~al_nl).sum()),
+        "pre1901_al_nl_rows": int((al_nl & (raw["yearID"] < 1901)).sum()),
+    }
     yr = by_year(df)
     years = [int(y) for y in yr.index]
 
@@ -171,7 +180,9 @@ def main() -> None:
     # 10. Triples vs home runs
     tr_per1000 = yr["3B"] / yr["AB"] * 1000
     hr_per1000 = yr["HR"] / yr["AB"] * 1000
-    cross = int(next(y for y in years if yr.loc[y, "HR"] > yr.loc[y, "3B"]))
+    hr_ahead = yr["HR"] > yr["3B"]
+    first_cross = int(hr_ahead.idxmax())
+    for_good = int(hr_ahead[~hr_ahead].index.max() + 1)  # the season after the last year triples led
     f_triples = {
         "years": years,
         "triples_per_1000ab": [round(float(v), 2) for v in tr_per1000],
@@ -180,7 +191,9 @@ def main() -> None:
                   "value": round(float(tr_per1000.iloc[0]), 2)},
         "last": {"year": years[-1], "triples": int(yr["3B"].iloc[-1]), "hr": int(yr["HR"].iloc[-1]),
                  "value": round(float(tr_per1000.iloc[-1]), 2)},
-        "hr_pass_triples_year": cross,
+        "hr_first_pass_triples_year": first_cross,
+        "hr_pass_triples_for_good_year": for_good,
+        "triples_led_again": [int(y) for y in hr_ahead[~hr_ahead].index if y > first_cross],
         "hr_to_triples_last": round(float(yr["HR"].iloc[-1] / yr["3B"].iloc[-1]), 1),
     }
 
@@ -225,6 +238,7 @@ def main() -> None:
     findings = {
         "eras": [{"era": label, "first": lo, "last": hi} for label, lo, hi in ERAS],
         "headline": headline,
+        "dropped": dropped,
         "home_runs": f_hr,
         "strikeouts": f_so,
         "batting_average": f_avg,

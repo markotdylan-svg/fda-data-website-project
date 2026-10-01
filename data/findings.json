@@ -46,6 +46,12 @@
   "so_rate_change": 2.7,
   "foreign_share_last": 0.2646
  },
+ "dropped": {
+  "source_rows": 128598,
+  "kept_rows": 108559,
+  "other_league_rows": 15042,
+  "pre1901_al_nl_rows": 4997
+ },
  "home_runs": {
   "years": [
    1901,
@@ -2266,7 +2272,11 @@
    "hr": 5650,
    "value": 3.84
   },
-  "hr_pass_triples_year": 1929,
+  "hr_first_pass_triples_year": 1929,
+  "hr_pass_triples_for_good_year": 1932,
+  "triples_led_again": [
+   1931
+  ],
   "hr_to_triples_last": 9.0
  },
  "leagues": {
